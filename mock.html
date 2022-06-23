@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+
+    <script>
+        $(()=>{
+
+            console.log('entered the program');
+
+            $('#bookid').blur(()=>{
+
+                console.log('blur occured');
+
+                let input={bookid:$('#bookid').val()};
+
+                let parameterstothefunction={
+                    data:input,
+                    url:"http://localhost:8081/finddetails",
+                    type:'get',
+                    dataType:'json',
+                    success:(data)=>{console.log('connected successfully'+data.status)
+                             $('#msg').text('bookid is found');
+                             $('#bookname').val(data.bookdetails.bookname);
+                             $('#price').val(data.bookdetails.price);
+                    },
+                    error:(error)=>{}
+                }
+                $.ajax(parameterstothefunction);
+
+            })
+
+            $('#btn').click(()=>{
+
+                console.log('button clicked')
+                 input={bookid:$('#bookid').val(),price:$('#price').val()}
+
+                 let parameterstothefunction={
+                    data:input,
+                    url:"http://localhost:8081/update",
+                    type:'get',
+                    dataType:'json',
+                    success:(data)=>{console.log('connected successfully'+data.status)
+                    $('msg').text('updated');
+                    $('#bookname').val("");
+                    $('#price').val("");
+                    },
+                    error:(error)=>{}
+                }
+                $.ajax(parameterstothefunction);
+
+
+
+            })
+
+
+        })
+    </script>
+  
+</head>
+
+<body>
+	<input type="text" id="bookid" placeholder="book id">
+<span id="msg">message here</span><br>
+<input type="text" id="bookname" placeholder="book name"><br>
+<input type="text" id="price" placeholder="price">
+<button id="btn">update book</button>
+</body>
+</html>
